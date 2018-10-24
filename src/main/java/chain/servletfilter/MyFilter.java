@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @author smzdm
+ * @author beigua
  */
 public class MyFilter implements Filter {
     private List<Hanlder> handlers = Lists.newArrayList();
