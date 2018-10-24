@@ -9,6 +9,7 @@ target/
 *.iws
 out/
 .DS_Store
+*.jar
 
 rebel.xml
 classes/
