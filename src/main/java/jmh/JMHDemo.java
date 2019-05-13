@@ -5,9 +5,8 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 /**
  * Mode:
@@ -31,21 +30,36 @@ import java.util.concurrent.TimeUnit;
  * Warmup 是指在实际进行 benchmark 前先进行预热的行为。为什么需要预热？因为 JVM 的 JIT 机制的存在，如果某个函数被调用多次之后，JVM 会尝试将其编译成为机器码从而提高执行速度。为了让 benchmark 的结果更加接近真实情况就需要进行预热。
  */
 @BenchmarkMode(Mode.Throughput) // 测试方法平均执行时间
-@OutputTimeUnit(TimeUnit.MICROSECONDS) // 输出结果的时间粒度为微秒
+@OutputTimeUnit(TimeUnit.SECONDS) // 输出结果的时间粒度为微秒
 @State(Scope.Thread) // 每个测试线程一个实例
 public class JMHDemo {
 
-    private static Logger log = LoggerFactory.getLogger(JMHDemo.class);
+//    private static Logger log = LoggerFactory.getLogger(JMHDemo.class);
+
+//    @Benchmark
+//    public String stringConcat() {
+//        String a = "a";
+//        String b = "b";
+//        String c = "c";
+//        String s = a + b + c;
+//        return s;
+//    }
+
 
     @Benchmark
-    public String stringConcat() {
-        String a = "a";
-        String b = "b";
-        String c = "c";
-        String s = a + b + c;
-        log.debug(s);
-        return s;
+    public String dateFormate() {
+        Date time = new Date();
+        return DateUtil.formatDate(DateUtil.FORMAT_YYYY_MM_DD_HHMMSS, time);
     }
+
+    @Benchmark
+    public int dateDiff() {
+        String start = "2018-10-11 17:33:22";
+        String end = "2018-10-11 17:33:23";
+        return DateUtil.timeDif(start, end);
+    }
+
+
     public static void main(String[] args) throws RunnerException {
         // 使用一个单独进程执行测试，执行5遍warmup，然后执行5遍测试
         Options opt = new OptionsBuilder().include(JMHDemo.class.getSimpleName()).forks(1).warmupIterations(5)

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Response1 implements Response {
+public class StatisticResponse implements Response {
     private String message ;
 }

@@ -4,6 +4,16 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+/**
+ *
+ * https://www.oracle.com/technetwork/java/interceptingfilter-142169.html
+ * https://github.com/iluwatar/java-design-patterns/tree/master/intercepting-filter
+ * https://juejin.im/post/5ad40ee1f265da2375075a23
+ * https://www.baeldung.com/chain-of-responsibility-pattern
+ * https://www.baeldung.com/intercepting-filter-pattern-in-java
+ *
+ * @author beigua
+ */
 public class Main {
     public static void main(String[] args) {
         List<Interceptor> interceptorList = Lists.newArrayList();

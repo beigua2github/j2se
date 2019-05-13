@@ -7,7 +7,7 @@ public class LastFilter implements Filter {
 
 
         if (context.getRequest().getType().equals("Last")){
-            Response1 response1 = new Response1("last");
+            StatisticResponse response1 = new StatisticResponse("Last");
             context.setResponse(response1);
             System.out.println("【END】I'am last,the Req is = " + context.getRequest().getMessage() + ",the Rsp = " + context.getResponse());
             return response1;

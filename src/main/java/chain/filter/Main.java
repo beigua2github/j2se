@@ -18,8 +18,10 @@ public class Main {
             private Response response;
         };
 
-        Request request = new Request1("Last");
+        Request request = new StatisticRequest("Last");
         context.setRequest(request);
+
+        System.out.println("The Request is " + request.getMessage());
 
         Response handle = zooHandler.handle(context);
 

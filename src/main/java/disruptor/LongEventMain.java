@@ -1,10 +1,13 @@
 package disruptor;
 
+import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.EventHandlerGroup;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LongEventMain {
@@ -17,7 +20,9 @@ public class LongEventMain {
 
         Disruptor<LongEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
 
-        disruptor.handleEventsWith(new LongEventHandler());
+        EventHandlerGroup<LongEvent> longEventEventHandlerGroup = disruptor.handleEventsWith(new LongEventHandler());
+        longEventEventHandlerGroup.then((EventHandler<LongEvent>) (event, sequence, endOfBatch) -> System.out.println("end"));
+
 
         disruptor.start();
 
@@ -27,13 +32,17 @@ public class LongEventMain {
 
         ByteBuffer bb = ByteBuffer.allocate(8);
 
-        for (long l = 0; true; l++) {
+        for (long l = 0; l < 10; l++) {
             bb.putLong(0, l);
 
             producer.onData(bb);
 
             Thread.sleep(1000);
         }
+
+
+        disruptor.shutdown();
+        ((ExecutorService) executor).shutdown();
 
     }
 }
