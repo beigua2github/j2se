@@ -12,6 +12,7 @@ import java.util.List;
  * https://www.baeldung.com/chain-of-responsibility-pattern
  * https://www.baeldung.com/intercepting-filter-pattern-in-java
  * https://my.oschina.net/redraiment/blog/105209
+ * http://www.tutorialspoint.com/design_pattern/intercepting_filter_pattern.htm
  * @author beigua
  */
 public class Main {
