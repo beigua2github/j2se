@@ -15,8 +15,8 @@ public class MyFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-        handlers.add(M_handler.ONE);
-        handlers.add(M_handler.TWO);
+        handlers.add(M_handler.INIT);
+        handlers.add(M_handler.LOG);
     }
 
     @Override
@@ -56,17 +56,19 @@ public class MyFilter implements Filter {
     }
 
     private enum M_handler implements MyFilter.Hanlder{
-        ONE{
+        INIT{
             @Override
             public void handle(MyFilter.Context context) throws IOException, ServletException {
-                System.out.println("This is MyFilter => one");
+                System.out.println("MyFilter => Initialized");
                 context.handle();
             }
-        },TWO{
+        },LOG{
             @Override
             public void handle(MyFilter.Context context) throws IOException, ServletException {
-                System.out.println("This is MyFilter => two");
+                System.out.println("MyFilter => Cat.newTransaction begin");
                 context.handle();
+                System.out.println("MyFilter => Cat.newTransaction end");
+
             }
         }
     }
