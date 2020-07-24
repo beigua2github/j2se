@@ -14,7 +14,9 @@
         <org.aspectj-version>1.8.9</org.aspectj-version>
         <metrics.version>4.0.0</metrics.version>
 
-        <guava.version>21.0</guava.version>
+        <guava.version>24.1.1</guava.version>
+             
+             
     </properties>
     <dependencies>
 
