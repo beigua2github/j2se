@@ -1,38 +1,30 @@
 package multiThread;
 
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class ExecutorsDemo {
     public static void main(String[] args) {
 
-        List<ProjectOrderDto> projectOrders = Lists.newArrayList();
-        for (int i = 0; i < 10; i++) {
-            projectOrders.add(ProjectOrderDto.builder().partyId(i + "").amount(i).username("test-" + i).build());
-        }
 
         ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         try {
-            projectOrders
-                    .stream()
-                    .map(projectOrderDto -> threadPool.submit(() -> balanceCashBack(projectOrderDto)))
+            IntStream.range(1,100)
+                    .mapToObj(it -> threadPool.submit(() -> request(it)))
                     .collect(Collectors.toList())
-                    .forEach((Future<ProjectOrderDto> it) -> {
-                        ProjectOrderDto projectOrderDto = null;
+                    .forEach((Future<String> it) -> {
+                        String result = null;
                         try {
-                            projectOrderDto = it.get();
+                            result = it.get();
+                            System.out.println(result);
                         } catch (InterruptedException | ExecutionException e) {
                             log.error("XXXXX", e);
-                        }
-
-                        if (projectOrderDto != null) {
-                            log.error("balanceCashBack failed,the ProjectOrderDto is {}", projectOrderDto);
-                            projectOrders.remove(projectOrderDto);
                         }
                     });
         } catch (RuntimeException e) {
@@ -40,17 +32,34 @@ public class ExecutorsDemo {
         } finally {
             threadPool.shutdown();
         }
-
-
-        System.out.println(projectOrders.size());
     }
 
-    private static ProjectOrderDto balanceCashBack(ProjectOrderDto projectOrderDto) {
-        if (projectOrderDto.getAmount() % 2 == 0) {
-            return projectOrderDto;
-        } else {
-            return null;
-        }
+    static  OkHttpClient client=new OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)       //设置连接超时
+            .readTimeout(60, TimeUnit.SECONDS)          //设置读超时
+            .writeTimeout(60,TimeUnit.SECONDS)          //设置写超时
+            .retryOnConnectionFailure(true)             //是否自动重连
+            .build();
 
+    private static String request(int it) {
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("username","kobe");
+        builder.add("password","123");
+
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8088/redis/origin?key=nba")
+                .post(builder.build())
+                .build();
+
+        String result = "false";
+
+        try {
+            Response response  = client.newCall(request).execute();
+            result = response.body().string();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        return result;
     }
 }
