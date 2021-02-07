@@ -2,10 +2,10 @@ package jmh;
 
 import java.util.concurrent.Semaphore;
 
-public class RequestHanlder implements Runnable {
+public class RequestHandler implements Runnable {
     private Semaphore semaphore;
 
-    public RequestHanlder(Semaphore semaphore) {
+    public RequestHandler(Semaphore semaphore) {
         this.semaphore = semaphore;
     }
 

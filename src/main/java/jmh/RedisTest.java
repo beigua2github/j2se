@@ -23,7 +23,7 @@ public class RedisTest{
 
         int count = 0;
         while (count < 2000) {
-            new Thread(new RequestHanlder(semaphore)).start();
+            new Thread(new RequestHandler(semaphore)).start();
             System.out.println("开始了" + ++count +"线程");
             TimeUnit.MILLISECONDS.sleep(100);
         }
