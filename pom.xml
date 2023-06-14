@@ -20,7 +20,7 @@
         <org.aspectj-version>1.8.9</org.aspectj-version>
         <metrics.version>4.0.0</metrics.version>
 
-        <guava.version>30.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
 
 
     </properties>
